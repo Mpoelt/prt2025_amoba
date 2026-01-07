@@ -3,20 +3,19 @@ package org.example.domain;
 
 
 public abstract class Player {
-    private final int horizontalCoordinate;
-    private final int verticalCoordinate;
+    private int row;
+    private int col;
 
-    protected Player(int horizontalCoordinate, int verticalCoordinate) {
-        this.horizontalCoordinate = horizontalCoordinate;
-        this.verticalCoordinate = verticalCoordinate;
+    public void setPosition(int row, int col) {
+        this.row = row;
+        this.col = col;
     }
 
-
-    public int getHorizontalCoordinate() {
-        return horizontalCoordinate;
+    public int getRow() {
+        return row;
     }
 
-    public int getVertcalCoordinate() {
-        return getHorizontalCoordinate();
+    public int getCol() {
+        return col;
     }
 }

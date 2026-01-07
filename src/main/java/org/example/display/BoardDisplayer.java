@@ -7,7 +7,7 @@ public class BoardDisplayer {
 
     private final ConsoleService consoleService;
 
-    public BoardDisplayer(ConsoleService consoleService, Player player) {
+    public BoardDisplayer(ConsoleService consoleService) {
         this.consoleService = consoleService;
     }
 
@@ -56,27 +56,11 @@ public class BoardDisplayer {
 
 
     private void addPlayerToDisplay(Player player, char[][] matrix, int size){
-        int horizontalCoordinate = player.getHorizontalCoordinate();
-        int verticalCoordinate = player.getVertcalCoordinate();
-        matrix[horizontalCoordinate][verticalCoordinate] = 'O';
+        int row = player.getRow();
+        int col = player.getCol();
+        matrix[player.getRow()][player.getCol()] = 'O';
 
         }
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
