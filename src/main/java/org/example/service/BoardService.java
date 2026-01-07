@@ -32,15 +32,7 @@ public class BoardService {
         }
         return true;
     }
-    public static void boardPrint(Board board){
-        for(int i = 0; i < board.getSize(); i++){
-            for(int j = 0; j < board.getSize(); j++){
-                Symbol s = board.get(i,j);
-                System.out.print(s == Symbol.EMPTY ? ". " : s + " ");
-            }
-            System.out.println();
-        }
-    }
+
 }
 
 

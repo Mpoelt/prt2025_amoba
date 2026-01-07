@@ -1,6 +1,7 @@
 package org.example;
 
 
+import org.example.display.BoardDisplayer;
 import org.example.domain.Board;
 import org.example.init.BoardInit;
 import org.example.service.BoardService;
@@ -14,7 +15,8 @@ public class AmobaGameApp
         ConsoleService consoleService = new ConsoleService();
         Board board = BoardInit.createEmptyBoard(consoleService.readIntFromConsole("Add meg a pálya méretét: "));
         BoardService boardService = new BoardService(board);
-        boardService.boardPrint(board);
+        BoardDisplayer.boardPrint(board);
+
     }
 
 
