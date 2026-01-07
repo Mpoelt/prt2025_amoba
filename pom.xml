@@ -8,12 +8,20 @@
     <artifactId>amoba</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+  <!--Spring-boot -->
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.5.7</version>
+  </parent>
+
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven-checkstyle.version>3.6.0</maven-checkstyle.version>
     </properties>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -21,6 +29,30 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <!--Spring-boot -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+    <!--Spring-boot-starter-data-jpa-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <!--com.h2database -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <!--Spring-boot-starter-web-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+
+
   </dependencies>
 
   <build>
