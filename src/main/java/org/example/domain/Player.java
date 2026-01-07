@@ -1,16 +1,22 @@
 package org.example.domain;
 
+
+
 public abstract class Player {
+    private final int horizontalCoordinate;
+    private final int verticalCoordinate;
 
-    protected final Symbol symbol;
-
-    protected Player(Symbol symbol) {
-        this.symbol = symbol;
+    protected Player(int horizontalCoordinate, int verticalCoordinate) {
+        this.horizontalCoordinate = horizontalCoordinate;
+        this.verticalCoordinate = verticalCoordinate;
     }
 
-    public Symbol getSymbol() {
-        return symbol;
+
+    public int getHorizontalCoordinate() {
+        return horizontalCoordinate;
     }
 
-    public abstract Move nextMove(Board board);
+    public int getVertcalCoordinate() {
+        return getHorizontalCoordinate();
+    }
 }
