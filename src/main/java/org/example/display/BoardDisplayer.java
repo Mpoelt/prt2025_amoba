@@ -1,6 +1,7 @@
 package org.example.display;
 import org.example.domain.Board;
 import org.example.domain.Player;
+import org.example.domain.Symbol;
 import org.example.service.ConsoleService;
 
 public class BoardDisplayer {
@@ -10,7 +11,7 @@ public class BoardDisplayer {
     public BoardDisplayer(ConsoleService consoleService) {
         this.consoleService = consoleService;
     }
-
+/*
     public void displayBoard(Board board, Player player){
         int size = board.getSize();
         char[][] matrix =emptySetup(size);
@@ -54,13 +55,38 @@ public class BoardDisplayer {
         return sb.toString();
     }
 
-
     private void addPlayerToDisplay(Player player, char[][] matrix, int size){
         int row = player.getRow();
         int col = player.getCol();
         matrix[player.getRow()][player.getCol()] = 'O';
 
         }
+ */
+
+    public void displayBoard(Board board){
+        int size = board.getSize();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        //Fejléc
+        stringBuilder.append("   ");
+        for (int col = 0; col < size; col++){
+            stringBuilder.append((char) ('A' + col)).append(" ");
+        }
+        stringBuilder.append("\n");
+
+        //Tábla
+        for (int row = 0; row < size; row++){
+            stringBuilder.append(String.format("2%d ", row));
+            for (int col = 0; col < 0; col++){
+                Symbol symbol = board.get(row, col);
+                stringBuilder.append(symbol == Symbol.EMPTY ? ". " : symbol + " ");
+            }
+            stringBuilder.append("\n");
+        }
+        consoleService.print("\n" + stringBuilder);
+    }
+
+
     }
 
 
