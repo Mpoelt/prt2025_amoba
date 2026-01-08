@@ -10,17 +10,20 @@ public class GameService {
     private final Board board;
     private final PlayerMoveService playerMoveService;
     private final BoardService boardService;
+    ComputerPlayerService computerPlayerService;
 
-    public GameService(BoardDisplayer boardDisplayer, ConsoleService consoleService, Board board, PlayerMoveService playerMoveService, BoardService boardService) {
+    public GameService(BoardDisplayer boardDisplayer, ConsoleService consoleService, Board board,
+                       PlayerMoveService playerMoveService, BoardService boardService, ComputerPlayerService computerPlayerService) {
         this.boardDisplayer = boardDisplayer;
         this.consoleService = consoleService;
         this.board = board;
         this.playerMoveService = playerMoveService;
         this.boardService = boardService;
+        this.computerPlayerService = computerPlayerService;
     }
 
 
-    public void startGame(Player humanPlayer){
+    public void startGame(Player humanPlayer, Player computerPlayer){
 
         while (!playerMoveService.checkWin(board, humanPlayer)){
         //1. lépés
@@ -31,6 +34,17 @@ public class GameService {
             }
         //megjelenítés
             boardDisplayer.displayBoard(board);
+
+            consoleService.print("ComputerPlayer gondolkodik...");
+            computerPlayerService.makeMove(computerPlayer, board);
+            boardService.makeMove(computerPlayer);
+            boardDisplayer.displayBoard(board);
+
+            if(playerMoveService.checkWin(board, computerPlayer)){
+                consoleService.print("A ComputerPlayer nyert!");
+                break;
+            }
+
         }
 
         consoleService.print("Congratulation! You Win!");

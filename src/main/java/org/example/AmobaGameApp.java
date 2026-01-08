@@ -2,14 +2,8 @@ package org.example;
 
 
 import org.example.display.BoardDisplayer;
-import org.example.domain.Board;
-import org.example.domain.HumanPlayer;
-import org.example.domain.Player;
-import org.example.domain.Symbol;
-import org.example.service.BoardService;
-import org.example.service.ConsoleService;
-import org.example.service.GameService;
-import org.example.service.PlayerMoveService;
+import org.example.domain.*;
+import org.example.service.*;
 
 public class AmobaGameApp
 {
@@ -18,13 +12,15 @@ public class AmobaGameApp
         int size = consoleService.readIntFromConsole("Add meg a pálya méretét: ");
         Board board = new Board(size);
         Player humanPlayer = new HumanPlayer(Symbol.O);
+        Player computerPlayer = new ComputerPlayer(Symbol.X);
 
         PlayerMoveService playerMoveService = new PlayerMoveService(consoleService);
         BoardService boardService = new BoardService(board);
         BoardDisplayer boardDisplayer = new BoardDisplayer(consoleService);
-        GameService gameService = new GameService(boardDisplayer, consoleService, board, playerMoveService, boardService);
+        ComputerPlayerService computerPlayerService = new ComputerPlayerService();
+        GameService gameService = new GameService(boardDisplayer, consoleService, board, playerMoveService, boardService, computerPlayerService);
 
-    gameService.startGame(humanPlayer);
+    gameService.startGame(humanPlayer, computerPlayer);
 
 
     }
