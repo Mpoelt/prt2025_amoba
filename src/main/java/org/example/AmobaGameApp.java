@@ -5,6 +5,7 @@ import org.example.display.BoardDisplayer;
 import org.example.domain.Board;
 import org.example.domain.HumanPlayer;
 import org.example.domain.Player;
+import org.example.domain.Symbol;
 import org.example.init.BoardInit;
 import org.example.service.BoardService;
 import org.example.service.ConsoleService;
@@ -14,15 +15,24 @@ public class AmobaGameApp
 {
     public static void main(String[] args){
         ConsoleService consoleService = new ConsoleService();
-        Board board = BoardInit.createEmptyBoard(consoleService.readIntFromConsole("Add meg a pálya méretét: "));
-        Player humanPlayer = new HumanPlayer();
+        int size = consoleService.readIntFromConsole("Add meg a pálya méretét: ");
+        Board board = new Board(size);
+        Player humanPlayer = new HumanPlayer(Symbol.O);
 
         PlayerMoveService playerMoveService = new PlayerMoveService(consoleService);
-        BoardDisplayer boardDisplayer = new BoardDisplayer(consoleService);
         BoardService boardService = new BoardService(board);
+        BoardDisplayer boardDisplayer = new BoardDisplayer(consoleService);
 
-        playerMoveService.readPlayerMove(humanPlayer, board.getSize());
-        boardDisplayer.displayBoard(board, humanPlayer);
+        //1. lépés
+        playerMoveService.readPlayerMove(humanPlayer, size);
+
+        //logika
+        if (!boardService.makeMove(humanPlayer)){
+            consoleService.print("Ez a mező foglalt!\n");
+        }
+
+        //megjelenítés
+        boardDisplayer.displayBoard(board);
 
     }
 

@@ -76,8 +76,8 @@ public class BoardDisplayer {
 
         //Tábla
         for (int row = 0; row < size; row++){
-            stringBuilder.append(String.format("2%d ", row));
-            for (int col = 0; col < 0; col++){
+            stringBuilder.append(String.format("%2d ", row));
+            for (int col = 0; col < size; col++){
                 Symbol symbol = board.get(row, col);
                 stringBuilder.append(symbol == Symbol.EMPTY ? ". " : symbol + " ");
             }

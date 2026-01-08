@@ -28,4 +28,8 @@ public class Board {
         fields[row][col] = symbol;
         return true;
     }
+    public void set(int row, int col, Symbol symbol) {
+        fields[row][col] = symbol;
+    }
+
 }
