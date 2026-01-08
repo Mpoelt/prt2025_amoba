@@ -1,8 +1,7 @@
 package org.example.service;
 
 import org.example.domain.Board;
-import org.example.domain.Move;
-import org.example.domain.Symbol;
+import org.example.domain.Player;
 
 public class BoardService {
     private final Board board;
@@ -10,6 +9,10 @@ public class BoardService {
 
     public BoardService(Board board) {
         this.board = board;
+    }
+
+    public boolean makeMove(Player player){
+        return board.placeSymbol(player.getRow(), player.getCol(), player.getSymbol());
     }
 
 
