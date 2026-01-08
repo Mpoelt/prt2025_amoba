@@ -8,19 +8,72 @@ import java.util.Random;
 
 public class ComputerPlayerService {
     private final Random random = new Random();
+    private final PlayerMoveService playerMoveService;
 
-    public void makeMove(Player computerPlayer, Board board){
+    public ComputerPlayerService(PlayerMoveService playerMoveService) {
+        this.playerMoveService = playerMoveService;
+    }
+
+    public void makeMove(Player computerPlayer, Player humanPlayer, Board board){
+        Symbol computerPlayerSymbol = computerPlayer.getSymbol();
+        Symbol humanPlayerSymbol = humanPlayer.getSymbol();
+
         int size = board.getSize();
+        int originalRow = computerPlayer.getRow();
+        int originalCol = computerPlayer.getCol();
 
-        while (true) {
-            int row = random.nextInt(size);
-            int col = random.nextInt(size);
+        //Try win
+        for (int row = 0; row < size; row++){
+            for (int col = 0; col < size; col++){
+                if (board.get(row, col) == Symbol.EMPTY){
 
-            if (board.get(row, col) == Symbol.EMPTY){
-                computerPlayer.setPosition(row,col);
-                return;
+                    board.set(row, col, computerPlayerSymbol);
+                    computerPlayer.setPosition(row, col);
+
+                    if (playerMoveService.checkWin(board, computerPlayer)){
+                        return; //wining move
+                    }
+                    board.set(row, col, Symbol.EMPTY);
+                    computerPlayer.setPosition(originalRow, originalCol);
+                }
             }
         }
+        //Try block
+        for (int row = 0; row < size; row++){
+            for (int col = 0; col < size; col++){
+                if (board.get(row, col) == Symbol.EMPTY){
+
+                    board.set(row, col, humanPlayerSymbol);
+                    humanPlayer.setPosition(row, col);
+
+                    if (playerMoveService.checkWin(board, humanPlayer)){
+                        board.set(row, col, computerPlayerSymbol);
+                        computerPlayer.setPosition(row, col);
+                        return; //block
+                    }
+                    board.set(row, col, Symbol.EMPTY);
+                }
+            }
+        }
+        //Random move
+        makeRandommove(computerPlayer, board);
+    }
+
+    private void makeRandommove(Player computerPlayer, Board board) {
+        int size = board.getSize();
+
+        while (true){
+          int row = random.nextInt(size);
+          int col = random.nextInt(size);
+
+          if (board.get(row, col) == Symbol.EMPTY){
+              board.set(row, col, computerPlayer.getSymbol());
+              computerPlayer.setPosition(row, col);
+              return;
+              }
+
+        }
+
 
     }
 

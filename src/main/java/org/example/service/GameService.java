@@ -36,7 +36,7 @@ public class GameService {
             boardDisplayer.displayBoard(board);
 
             consoleService.print("ComputerPlayer gondolkodik...");
-            computerPlayerService.makeMove(computerPlayer, board);
+            computerPlayerService.makeMove(computerPlayer, humanPlayer, board);
             boardService.makeMove(computerPlayer);
             boardDisplayer.displayBoard(board);
 
