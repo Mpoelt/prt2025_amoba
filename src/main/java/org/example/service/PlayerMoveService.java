@@ -1,6 +1,8 @@
 package org.example.service;
 
+import org.example.domain.Board;
 import org.example.domain.Player;
+import org.example.domain.Symbol;
 
 public class PlayerMoveService {
     private final ConsoleService consoleService;
@@ -15,6 +17,16 @@ public class PlayerMoveService {
         
         player.setPosition(row, col);
     }
+
+
+    public boolean checkWin(Board board, Player player){
+        int row = player.getRow();
+        int col = player.getCol();
+
+        return checkHorizontal(board, row, col) || checkVertical(board, row, col) ||
+                checkDiagonalDown(board, row, col) || checkDiagonalUp(board, row, col);
+    }
+
 
     private int readColumn(int boardSize) {
         while (true) {
@@ -47,6 +59,122 @@ public class PlayerMoveService {
             }
         }
 
+    }
+
+    private boolean checkHorizontal(Board board, int row, int col){
+        Symbol symbol = board.get(row, col);
+        if (symbol == Symbol.EMPTY){
+            return false;
+        }
+
+        int count = 1;
+
+        //check left
+        for (int c = col - 1; c >= 0; c--){
+            if (board.get(row, c) == symbol){
+                count++;
+            } else {
+                break;
+            }
+        }
+
+        //check right
+        for (int c = col + 1; c < board.getSize(); c++){
+            if (board.get(row, c) == symbol){
+                count++;
+            } else {
+                break;
+            }
+        }
+
+        return count >= 4;
+    }
+
+
+    private boolean checkVertical(Board board, int row, int col){
+        Symbol symbol = board.get(row, col);
+        if (symbol == Symbol.EMPTY){
+            return false;
+        }
+
+        int count = 1;
+
+        // check up
+        for ( int r = row - 1; r >= 0; r--){
+            if(board.get(r, col) == symbol){
+                count++;
+            } else {
+                break;
+            }
+        }
+
+        //check down
+        for (int r = row + 1; r < board.getSize(); r++){
+            if (board.get(r, col) == symbol){
+                count++;
+            } else {
+                break;
+            }
+        }
+        return count >= 4;
+    }
+
+    private boolean checkDiagonalDown(Board board, int row, int col){
+        Symbol symbol = board.get(row, col);
+        if (symbol == Symbol.EMPTY){
+            return false;
+        }
+
+        int count = 1;
+
+        //left-up
+        int r = row - 1;
+        int c = row -1;
+
+        while (r >= 0 && c >= 0 && board.get(r, c) == symbol){
+            count++;
+            r--;
+            c--;
+        }
+
+        //right-down
+        r = row + 1;
+        c = col + 1;
+        while (r < board.getSize() && c < board.getSize() && board.get(r, c) == symbol){
+            count++;
+            r++;
+            c++;
+        }
+        return count >= 4;
+    }
+
+    private boolean checkDiagonalUp(Board board, int row, int col){
+        Symbol symbol = board.get(row, col);
+        if (symbol == Symbol.EMPTY){
+            return false;
+        }
+
+        int count = 1;
+
+        //left-down
+        int r = row + 1;
+        int c = col - 1;
+        while (r < board.getSize() && c >= 0 && board.get(r, c) == symbol){
+            count++;
+            r++;
+            c--;
+        }
+
+        //right-up
+        r = row - 1;
+        c = col + 1;
+
+        while (r >= 0 && c < board.getSize() && board.get(r, c) == symbol){
+            count++;
+            r--;
+            c++;
+        }
+        return count >= 4;
     }
 
 

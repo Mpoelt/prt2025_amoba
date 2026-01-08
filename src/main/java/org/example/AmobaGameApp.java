@@ -6,9 +6,9 @@ import org.example.domain.Board;
 import org.example.domain.HumanPlayer;
 import org.example.domain.Player;
 import org.example.domain.Symbol;
-import org.example.init.BoardInit;
 import org.example.service.BoardService;
 import org.example.service.ConsoleService;
+import org.example.service.GameService;
 import org.example.service.PlayerMoveService;
 
 public class AmobaGameApp
@@ -19,20 +19,13 @@ public class AmobaGameApp
         Board board = new Board(size);
         Player humanPlayer = new HumanPlayer(Symbol.O);
 
-        PlayerMoveService playerMoveService = new PlayerMoveService(consoleService);
+       PlayerMoveService playerMoveService = new PlayerMoveService(consoleService);
         BoardService boardService = new BoardService(board);
         BoardDisplayer boardDisplayer = new BoardDisplayer(consoleService);
+        GameService gameService = new GameService(boardDisplayer, consoleService, board, playerMoveService, boardService);
 
-        //1. lépés
-        playerMoveService.readPlayerMove(humanPlayer, size);
+    gameService.startGame(humanPlayer);
 
-        //logika
-        if (!boardService.makeMove(humanPlayer)){
-            consoleService.print("Ez a mező foglalt!\n");
-        }
-
-        //megjelenítés
-        boardDisplayer.displayBoard(board);
 
     }
 
