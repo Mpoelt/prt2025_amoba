@@ -19,7 +19,7 @@ public class AmobaGameApp
         Board board = new Board(size);
         Player humanPlayer = new HumanPlayer(Symbol.O);
 
-       PlayerMoveService playerMoveService = new PlayerMoveService(consoleService);
+        PlayerMoveService playerMoveService = new PlayerMoveService(consoleService);
         BoardService boardService = new BoardService(board);
         BoardDisplayer boardDisplayer = new BoardDisplayer(consoleService);
         GameService gameService = new GameService(boardDisplayer, consoleService, board, playerMoveService, boardService);
