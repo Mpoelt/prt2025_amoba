@@ -7,7 +7,7 @@ import org.example.domain.Symbol;
 
 public class BoardInit {
 
-    public static Board createEmptyBoard(int size) {
+   /* public static Board createEmptyBoard(int size) {
         Board board = new Board(size);
 
         for (int i = 0; i < size; i++) {
@@ -18,5 +18,5 @@ public class BoardInit {
         return board;
     }
 
-
+*/
 }

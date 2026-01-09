@@ -25,29 +25,34 @@ public class GameService {
 
     public void startGame(Player humanPlayer, Player computerPlayer){
 
-        while (!playerMoveService.checkWin(board, humanPlayer)){
+        while (true){
         //1. lépés
             playerMoveService.readPlayerMove(humanPlayer, board.getSize());
         //logika
             if (!boardService.makeMove(humanPlayer)) {
                 consoleService.print("Ez a mező foglalt!\n");
+                continue;
             }
         //megjelenítés
             boardDisplayer.displayBoard(board);
 
+            if (playerMoveService.checkWin(board, humanPlayer.getRow(), humanPlayer.getCol(), humanPlayer.getSymbol())){
+                consoleService.print("Congratulation! You Win!");
+                return;
+            }
+
+            //ComputerPlayer Move
             consoleService.print("ComputerPlayer gondolkodik...");
             computerPlayerService.makeMove(computerPlayer, humanPlayer, board);
             boardService.makeMove(computerPlayer);
             boardDisplayer.displayBoard(board);
 
-            if(playerMoveService.checkWin(board, computerPlayer)){
+            if(playerMoveService.checkWin(board, computerPlayer.getRow(), computerPlayer.getCol(), computerPlayer.getSymbol())){
                 consoleService.print("A ComputerPlayer nyert!");
-                break;
+                return;
             }
 
         }
-
-        consoleService.print("Congratulation! You Win!");
     }
 
 

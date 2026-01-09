@@ -30,7 +30,7 @@ public class ComputerPlayerService {
                     board.set(row, col, computerPlayerSymbol);
                     computerPlayer.setPosition(row, col);
 
-                    if (playerMoveService.checkWin(board, computerPlayer)){
+                    if (playerMoveService.checkWin(board, computerPlayer.getRow(), computerPlayer.getCol(), computerPlayer.getSymbol())){
                         return; //wining move
                     }
                     board.set(row, col, Symbol.EMPTY);
@@ -46,7 +46,7 @@ public class ComputerPlayerService {
                     board.set(row, col, humanPlayerSymbol);
                     humanPlayer.setPosition(row, col);
 
-                    if (playerMoveService.checkWin(board, humanPlayer)){
+                    if (playerMoveService.checkWin(board, humanPlayer.getRow(), humanPlayer.getCol(), humanPlayer.getSymbol())){
                         board.set(row, col, computerPlayerSymbol);
                         computerPlayer.setPosition(row, col);
                         return; //block

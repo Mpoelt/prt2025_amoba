@@ -19,12 +19,12 @@ public class PlayerMoveService {
     }
 
 
-    public boolean checkWin(Board board, Player player){
-        int row = player.getRow();
-        int col = player.getCol();
+    public boolean checkWin(Board board, int row, int col, Symbol symbol){
 
-        return checkHorizontal(board, row, col) || checkVertical(board, row, col) ||
-                checkDiagonalDown(board, row, col) || checkDiagonalUp(board, row, col);
+        return checkHorizontal(board, row, col, symbol)
+              || checkVertical(board, row, col, symbol)
+              || checkDiagonalDown(board, row, col, symbol)
+              || checkDiagonalUp(board, row, col, symbol);
     }
 
 
@@ -61,13 +61,8 @@ public class PlayerMoveService {
 
     }
 
-    private boolean checkHorizontal(Board board, int row, int col){
-        Symbol symbol = board.get(row, col);
-        if (symbol == Symbol.EMPTY){
-            return false;
-        }
-
-        int count = 1;
+    private boolean checkHorizontal(Board board, int row, int col, Symbol symbol){
+          int count = 1;
 
         //check left
         for (int c = col - 1; c >= 0; c--){
@@ -91,12 +86,7 @@ public class PlayerMoveService {
     }
 
 
-    private boolean checkVertical(Board board, int row, int col){
-        Symbol symbol = board.get(row, col);
-        if (symbol == Symbol.EMPTY){
-            return false;
-        }
-
+    private boolean checkVertical(Board board, int row, int col, Symbol symbol){
         int count = 1;
 
         // check up
@@ -119,13 +109,8 @@ public class PlayerMoveService {
         return count >= 4;
     }
 
-    private boolean checkDiagonalDown(Board board, int row, int col){
-        Symbol symbol = board.get(row, col);
-        if (symbol == Symbol.EMPTY){
-            return false;
-        }
-
-        int count = 1;
+    private boolean checkDiagonalDown(Board board, int row, int col, Symbol symbol){
+       int count = 1;
 
         //left-up
         int r = row - 1;
@@ -148,12 +133,7 @@ public class PlayerMoveService {
         return count >= 4;
     }
 
-    private boolean checkDiagonalUp(Board board, int row, int col){
-        Symbol symbol = board.get(row, col);
-        if (symbol == Symbol.EMPTY){
-            return false;
-        }
-
+    private boolean checkDiagonalUp(Board board, int row, int col, Symbol symbol){
         int count = 1;
 
         //left-down
