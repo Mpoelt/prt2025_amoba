@@ -18,7 +18,9 @@ public class AmobaGameApp
         BoardService boardService = new BoardService(board);
         BoardDisplayer boardDisplayer = new BoardDisplayer(consoleService);
         ComputerPlayerService computerPlayerService = new ComputerPlayerService(playerMoveService);
-        GameService gameService = new GameService(boardDisplayer, consoleService, board, playerMoveService, boardService, computerPlayerService);
+        GameSaveService gameSaveService = new GameSaveService();
+        GameService gameService = new GameService(boardDisplayer, consoleService, board, playerMoveService,
+                boardService, computerPlayerService, gameSaveService );
 
     gameService.startGame(humanPlayer, computerPlayer);
 

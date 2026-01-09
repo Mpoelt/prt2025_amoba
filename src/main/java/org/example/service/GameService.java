@@ -11,15 +11,18 @@ public class GameService {
     private final PlayerMoveService playerMoveService;
     private final BoardService boardService;
     ComputerPlayerService computerPlayerService;
+    private final GameSaveService gameSaveService;
 
     public GameService(BoardDisplayer boardDisplayer, ConsoleService consoleService, Board board,
-                       PlayerMoveService playerMoveService, BoardService boardService, ComputerPlayerService computerPlayerService) {
+                       PlayerMoveService playerMoveService, BoardService boardService, ComputerPlayerService computerPlayerService, GameSaveService gameSaveService) {
         this.boardDisplayer = boardDisplayer;
         this.consoleService = consoleService;
         this.board = board;
         this.playerMoveService = playerMoveService;
         this.boardService = boardService;
         this.computerPlayerService = computerPlayerService;
+        this.gameSaveService = gameSaveService;
+
     }
 
 
@@ -38,6 +41,7 @@ public class GameService {
 
             if (playerMoveService.checkWin(board, humanPlayer.getRow(), humanPlayer.getCol(), humanPlayer.getSymbol())){
                 consoleService.print("Congratulation! You Win!");
+                gameSaveService.saveBoardToFile(board, "mentes.txt");
                 return;
             }
 
