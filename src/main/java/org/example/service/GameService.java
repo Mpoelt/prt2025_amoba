@@ -12,9 +12,10 @@ public class GameService {
     private final BoardService boardService;
     ComputerPlayerService computerPlayerService;
     private final GameSaveService gameSaveService;
+    private final GameLoadService gameLoadService;
 
     public GameService(BoardDisplayer boardDisplayer, ConsoleService consoleService, Board board,
-                       PlayerMoveService playerMoveService, BoardService boardService, ComputerPlayerService computerPlayerService, GameSaveService gameSaveService) {
+                       PlayerMoveService playerMoveService, BoardService boardService, ComputerPlayerService computerPlayerService, GameSaveService gameSaveService, GameLoadService gameLoadService) {
         this.boardDisplayer = boardDisplayer;
         this.consoleService = consoleService;
         this.board = board;
@@ -23,10 +24,12 @@ public class GameService {
         this.computerPlayerService = computerPlayerService;
         this.gameSaveService = gameSaveService;
 
+        this.gameLoadService = gameLoadService;
     }
 
 
     public void startGame(Player humanPlayer, Player computerPlayer){
+
 
         while (true){
         //1. lépés
