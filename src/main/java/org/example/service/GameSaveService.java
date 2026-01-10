@@ -12,6 +12,8 @@ public class GameSaveService {
         try (FileWriter writer = new FileWriter(fileName)){
             int size = board.getSize();
 
+            writer.write("SIZE " + size + "\n");
+
             //fejléc (A B C ...)
             writer.write("   ");
             for (int c = 0; c < size; c++){
