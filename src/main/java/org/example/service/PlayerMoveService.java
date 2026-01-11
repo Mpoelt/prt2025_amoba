@@ -47,7 +47,12 @@ public class PlayerMoveService {
 
     private int readRow(int boardSize) {
         while (true){
-            String input = consoleService.readStringFromConsole("Add meg a sor számát (0 - " + (boardSize - 1) + "):");
+            String input = consoleService.readStringFromConsole(
+                    "Add meg a sor számát (0 - " + (boardSize - 1) + "):");
+            if (input.equalsIgnoreCase("save")){
+                throw new SaveCommandExceptionService();
+            }
+
             try{
                 int row = Integer.parseInt(input);
                 if ( row >= 0 && row < boardSize){
@@ -114,7 +119,7 @@ public class PlayerMoveService {
 
         //left-up
         int r = row - 1;
-        int c = row -1;
+        int c = col -1;
 
         while (r >= 0 && c >= 0 && board.get(r, c) == symbol){
             count++;

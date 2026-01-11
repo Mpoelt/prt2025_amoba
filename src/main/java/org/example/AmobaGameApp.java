@@ -9,13 +9,11 @@ public class AmobaGameApp
 {
     public static void main(String[] args){
         ConsoleService consoleService = new ConsoleService();
-        /*int size = consoleService.readIntFromConsole("Add meg a pálya méretét: ");
-        Board board = new Board(size);*/
         GameLoadService gameLoadService = new GameLoadService();
         LoadGameDecider loadGameDecider = new LoadGameDecider(consoleService, gameLoadService);
         Board board = loadGameDecider.loadBoard();
-        Player humanPlayer = new HumanPlayer(Symbol.O);
-        Player computerPlayer = new ComputerPlayer(Symbol.X);
+        Player humanPlayer = new HumanPlayer(Symbol.X);
+        Player computerPlayer = new ComputerPlayer(Symbol.O);
 
         PlayerMoveService playerMoveService = new PlayerMoveService(consoleService);
         BoardService boardService = new BoardService(board);

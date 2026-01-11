@@ -13,7 +13,7 @@ public class LoadGameDecider {
 
 
     public Board loadBoard(){
-        String load =  consoleService.readStringFromConsole("Load save? (yes/no): ");
+        String load =  consoleService.readStringFromConsole("Load Game? (yes/no): ");
         if ("yes".equalsIgnoreCase(load)){
             return gameLoadService.loadBoardFromFile("mentes.txt");
         } else {

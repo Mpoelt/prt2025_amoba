@@ -32,15 +32,23 @@ public class GameService {
 
 
         while (true){
-        //1. lépés
-            playerMoveService.readPlayerMove(humanPlayer, board.getSize());
+            consoleService.print("Ha el szeretnéd menteni a játék állását írd be a 'save' parancsot! ");
+            //megjelenítés
+            boardDisplayer.displayBoard(board);
+            try {
+                //1. lépés
+                playerMoveService.readPlayerMove(humanPlayer, board.getSize());
+            } catch (SaveCommandExceptionService e) {
+                gameSaveService.saveBoardToFile(board, "mentes.txt");
+                consoleService.print("Játék elmentve!");
+                continue;
+            }
         //logika
             if (!boardService.makeMove(humanPlayer)) {
                 consoleService.print("Ez a mező foglalt!\n");
                 continue;
             }
-        //megjelenítés
-            boardDisplayer.displayBoard(board);
+
 
             if (playerMoveService.checkWin(board, humanPlayer.getRow(), humanPlayer.getCol(), humanPlayer.getSymbol())){
                 consoleService.print("Congratulation! You Win!");
