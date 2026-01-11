@@ -33,10 +33,16 @@ public class GameService {
 
         while (true){
             consoleService.print("Ha el szeretnéd menteni a játék állását írd be a 'save' parancsot! ");
+
+            //első lépés középre helyezése
+            int center = board.getSize() / 2 ;
+            humanPlayer.setPosition(center, center);
+            boardService.makeMove(humanPlayer);
             //megjelenítés
             boardDisplayer.displayBoard(board);
+
             try {
-                //1. lépés
+                //1. bekért lépés
                 playerMoveService.readPlayerMove(humanPlayer, board.getSize());
             } catch (SaveCommandExceptionService e) {
                 gameSaveService.saveBoardToFile(board, "mentes.txt");
@@ -52,7 +58,7 @@ public class GameService {
 
             if (playerMoveService.checkWin(board, humanPlayer.getRow(), humanPlayer.getCol(), humanPlayer.getSymbol())){
                 consoleService.print("Congratulation! You Win!");
-                gameSaveService.saveBoardToFile(board, "mentes.txt");
+                boardDisplayer.displayBoard(board);
                 return;
             }
 
