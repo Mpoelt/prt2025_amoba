@@ -37,13 +37,84 @@ public class GameService {
         this.highScoreService = highScoreService;
     }
 
+    public void startGame(){
+        humanPlayer = playerInit.createHumanPlayer();
+        computerPlayer = new ComputerPlayer(Symbol.O, "Computer");
 
+        HighScore highScore = highScoreService.findByPlayerNameOrCreate(humanPlayer.getName());
+
+        while (true){
+            boolean playerWon = playerSingleGame(highScore);
+
+            if (playerWon){
+                highScore.setGamesWon(highScore.getGamesWon() + 1);
+                highScoreService.save(highScore);
+                consoleService.print("Nyertél! Összpontszám: " + highScore.getGamesWon());
+            }
+            String answer = consoleService.readStringFromConsole("Szeretné új játékot? (yes/no)");
+            if (!answer.equalsIgnoreCase("yes")){
+                consoleService.print("Kilépés. Viszlát!");
+                return;
+            }
+
+        }
+    }
+
+    private boolean playerSingleGame(HighScore highScore) {
+        board = loadGameDecider.loadBoard();
+        consoleService.printWithPlayerName("Hello {}, új játék indul!", humanPlayer.getName());
+
+        //első lépés középre helyezése
+        int center = board.getSize() / 2 ;
+        humanPlayer.setPosition(center, center);
+        boardService.makeMove(board, humanPlayer);
+        //megjelenítés
+        boardDisplayer.displayBoard(board);
+
+        while (true) {
+            try {
+                playerMoveService.readPlayerMove(humanPlayer, board.getSize());
+            } catch (SaveCommandExceptionService e) {
+                gameSaveService.saveBoardToFile(board, "mentes.txt");
+                consoleService.print("Játék elmentve!");
+                continue;
+            }
+
+            if (!boardService.makeMove(board, humanPlayer)) {
+                consoleService.print("Ez a mező foglalt!\n");
+                continue;
+            }
+
+            boardDisplayer.displayBoard(board);
+
+            if (playerMoveService.checkWin(board, humanPlayer.getRow(), humanPlayer.getCol(), humanPlayer.getSymbol())) {
+                consoleService.print("Gratulálok! Nyertél!");
+                return true;
+                }
+
+            //computer move
+            consoleService.print("ComputerPlayer gondolkodik...");
+            computerPlayerService.makeMove(computerPlayer, humanPlayer, board);
+            boardService.makeMove(board, computerPlayer);
+            boardDisplayer.displayBoard(board);
+
+            if(playerMoveService.checkWin(board, computerPlayer.getRow(), computerPlayer.getCol(), computerPlayer.getSymbol())) {
+                consoleService.print("A ComputerPlayer nyert!");
+                return false;
+            }
+
+        }
+
+    }
+
+
+    /*
     public void startGame(){
         board = loadGameDecider.loadBoard();
         humanPlayer = playerInit.createHumanPlayer();
         computerPlayer = new ComputerPlayer(Symbol.O, "Computer");
 
-        HighScore highScore = highScoreService.findByPlayerNamerOrCreate(humanPlayer.getName());
+        HighScore highScore = highScoreService.findByPlayerNameOrCreate(humanPlayer.getName());
         consoleService.printWithPlayerName("Hello {}, A játék elkezdődött, ez a te pályád: ", humanPlayer.getName());
 
         //első lépés középre helyezése
@@ -92,5 +163,5 @@ public class GameService {
         }
     }
 
-
+*/
 }

@@ -1,7 +1,6 @@
 package org.example.service;
 
 
-import lombok.NoArgsConstructor;
 import org.example.database.entity.HighScore;
 import org.example.database.repository.HighScoreRepository;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ public class HighScoreService {
         this.highScoreRepository = highScoreRepository;
     }
 
-    public HighScore findByPlayerNamerOrCreate(String playerName){
+    public HighScore findByPlayerNameOrCreate(String playerName){
         HighScore highScore = highScoreRepository.findByPlayerName(playerName);
         if (highScore == null){
             highScore = highScoreRepository.save(new HighScore(playerName, 0));
@@ -29,6 +28,12 @@ public class HighScoreService {
 
     public HighScore save(HighScore highScore){
         return highScoreRepository.save(highScore);
+    }
+
+    public void addHighScoreWhenPlayerWin(HighScore highScore){
+        highScore.setGamesWon(highScore.getGamesWon() + 1);
+        highScoreRepository.save(highScore);
+        consoleService.print("Pontszám fissítve! Jelenlegi pontszám: " + highScore.getGamesWon());
     }
 
 }
