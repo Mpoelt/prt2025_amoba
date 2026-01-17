@@ -1,7 +1,9 @@
 package org.example.service;
 
 import org.example.domain.Board;
+import org.springframework.stereotype.Service;
 
+@Service
 public class LoadGameDecider {
     private final ConsoleService consoleService;
     private final GameLoadService gameLoadService;

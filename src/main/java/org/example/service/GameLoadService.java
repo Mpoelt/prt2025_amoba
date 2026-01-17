@@ -2,11 +2,13 @@ package org.example.service;
 
 import org.example.domain.Board;
 import org.example.domain.Symbol;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+@Service
 
 public class GameLoadService {
 

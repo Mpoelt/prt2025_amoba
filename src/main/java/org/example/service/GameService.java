@@ -1,45 +1,59 @@
 package org.example.service;
 
+import org.example.database.entity.HighScore;
 import org.example.display.BoardDisplayer;
-import org.example.domain.Board;
-import org.example.domain.Player;
+import org.example.domain.*;
+import org.example.init.PlayerInit;
+import org.springframework.stereotype.Service;
 
+@Service
 public class GameService {
-    private final BoardDisplayer boardDisplayer;
     private final ConsoleService consoleService;
-    private final Board board;
+    private final PlayerInit playerInit;
+    private final LoadGameDecider loadGameDecider;
+    private final BoardDisplayer boardDisplayer;
     private final PlayerMoveService playerMoveService;
     private final BoardService boardService;
-    ComputerPlayerService computerPlayerService;
+    private final ComputerPlayerService computerPlayerService;
     private final GameSaveService gameSaveService;
-    private final GameLoadService gameLoadService;
+    //private final GameLoadService gameLoadService;
+    private final HighScoreService highScoreService;
 
-    public GameService(BoardDisplayer boardDisplayer, ConsoleService consoleService, Board board,
-                       PlayerMoveService playerMoveService, BoardService boardService, ComputerPlayerService computerPlayerService, GameSaveService gameSaveService, GameLoadService gameLoadService) {
+    private Board board;
+    private Player humanPlayer;
+    private ComputerPlayer computerPlayer;
+
+    public GameService(BoardDisplayer boardDisplayer, ConsoleService consoleService, PlayerInit playerInit, LoadGameDecider loadGameDecider,
+                       PlayerMoveService playerMoveService, BoardService boardService, ComputerPlayerService computerPlayerService, GameSaveService gameSaveService, HighScoreService highScoreService) {
         this.boardDisplayer = boardDisplayer;
         this.consoleService = consoleService;
-        this.board = board;
+        this.playerInit = playerInit;
+        this.loadGameDecider = loadGameDecider;
         this.playerMoveService = playerMoveService;
         this.boardService = boardService;
         this.computerPlayerService = computerPlayerService;
         this.gameSaveService = gameSaveService;
 
-        this.gameLoadService = gameLoadService;
+        this.highScoreService = highScoreService;
     }
 
 
-    public void startGame(Player humanPlayer, Player computerPlayer){
+    public void startGame(){
+        board = loadGameDecider.loadBoard();
+        humanPlayer = playerInit.createHumanPlayer();
+        computerPlayer = new ComputerPlayer(Symbol.O, "Computer");
 
+        HighScore highScore = highScoreService.findByPlayerNamerOrCreate(humanPlayer.getName());
+        consoleService.printWithPlayerName("Hello {}, A játék elkezdődött, ez a te pályád: ", humanPlayer.getName());
 
+        //első lépés középre helyezése
+        int center = board.getSize() / 2 ;
+        humanPlayer.setPosition(center, center);
+        boardService.makeMove(board, humanPlayer);
+        //megjelenítés
+        boardDisplayer.displayBoard(board);
         while (true){
             consoleService.print("Ha el szeretnéd menteni a játék állását írd be a 'save' parancsot! ");
-
-            //első lépés középre helyezése
-            int center = board.getSize() / 2 ;
-            humanPlayer.setPosition(center, center);
-            boardService.makeMove(humanPlayer);
-            //megjelenítés
-            boardDisplayer.displayBoard(board);
 
             try {
                 //1. bekért lépés
@@ -50,13 +64,15 @@ public class GameService {
                 continue;
             }
         //logika
-            if (!boardService.makeMove(humanPlayer)) {
+            if (!boardService.makeMove(board, humanPlayer)) {
                 consoleService.print("Ez a mező foglalt!\n");
                 continue;
             }
 
 
             if (playerMoveService.checkWin(board, humanPlayer.getRow(), humanPlayer.getCol(), humanPlayer.getSymbol())){
+                highScore.setGamesWon(highScore.getGamesWon() + 1);
+                highScoreService.save(highScore);
                 consoleService.print("Congratulation! You Win!");
                 boardDisplayer.displayBoard(board);
                 return;
@@ -65,7 +81,7 @@ public class GameService {
             //ComputerPlayer Move
             consoleService.print("ComputerPlayer gondolkodik...");
             computerPlayerService.makeMove(computerPlayer, humanPlayer, board);
-            boardService.makeMove(computerPlayer);
+            boardService.makeMove(board, computerPlayer);
             boardDisplayer.displayBoard(board);
 
             if(playerMoveService.checkWin(board, computerPlayer.getRow(), computerPlayer.getCol(), computerPlayer.getSymbol())){

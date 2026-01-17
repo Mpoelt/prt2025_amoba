@@ -3,6 +3,9 @@ package org.example.service;
 import org.example.domain.Board;
 import org.example.domain.Player;
 import org.example.domain.Symbol;
+import org.springframework.stereotype.Service;
+
+@Service
 
 public class PlayerMoveService {
     private final ConsoleService consoleService;

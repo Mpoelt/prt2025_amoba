@@ -3,8 +3,11 @@ package org.example.service;
 import org.example.domain.Board;
 import org.example.domain.Player;
 import org.example.domain.Symbol;
+import org.springframework.stereotype.Service;
 
 import java.util.Random;
+
+@Service
 
 public class ComputerPlayerService {
     private final Random random = new Random();

@@ -2,10 +2,12 @@ package org.example.service;
 
 import org.example.domain.Board;
 import org.example.domain.Symbol;
+import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
+@Service
 public class GameSaveService {
     public void saveBoardToFile(Board board, String fileName){
 

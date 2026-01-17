@@ -6,9 +6,15 @@ public abstract class Player {
     private int row;
     private int col;
     private final Symbol symbol;
+    private final String name;
 
-    protected Player(Symbol symbol){
+    protected Player(Symbol symbol, String name){
         this.symbol = symbol;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setPosition(int row, int col) {
