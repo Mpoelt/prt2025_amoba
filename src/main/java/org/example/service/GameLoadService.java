@@ -1,25 +1,25 @@
 package org.example.service;
 
-import org.example.domain.Board;
-import org.example.domain.Symbol;
-import org.springframework.stereotype.Service;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-@Service
+import org.example.domain.Board;
+import org.example.domain.Symbol;
+import org.springframework.stereotype.Service;
 
+@SuppressWarnings({"PMD.AtLeastOneConstructor", "PMD.PreserveStackTrace"})
+@Service
 public class GameLoadService {
 
-    public Board loadBoardFromFile( String fileName){
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))){
+    public Board loadBoardFromFile(final String fileName) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
 
-           //Méret beolvasása
-            String sizeLine = reader.readLine();
-            int size = Integer.parseInt(sizeLine.split(" ")[1]);
+            //Méret beolvasása
+            final String sizeLine = reader.readLine();
+            final int size = Integer.parseInt(sizeLine.split(" ")[1]);
 
-            Board board = new Board(size);
+            final Board board = new Board(size);
 
             //fejléc átugrása
             reader.readLine();
@@ -28,12 +28,12 @@ public class GameLoadService {
             String line;
 
             //sorok beolvasása
-            while ((line = reader.readLine()) != null && row < size){
-                String[] parts = line.trim().split(" ");
+            while ((line = reader.readLine()) != null && row < size) {
+                final String[] parts = line.trim().split(" ");
 
                 int col = 0;
-                for (int i = 1; i < parts.length && col < size; i++){
-                    Symbol symbol = charToSymbol(parts[i].charAt(0));
+                for (int i = 1; i < parts.length && col < size; i++) {
+                    final Symbol symbol = charToSymbol(parts[i].charAt(0));
                     board.set(row, col, symbol);
                     col++;
                 }
@@ -43,14 +43,15 @@ public class GameLoadService {
             }
             return board;
 
-        } catch (IOException | NumberFormatException e){
+        } catch (IOException | NumberFormatException e) {
             throw new RuntimeException("Hiba a fájl betöltésekor!");
 
 
         }
     }
 
-    private Symbol charToSymbol(char c) {
+    @SuppressWarnings("PMD.ShortVariable")
+    private Symbol charToSymbol(final char c) {
         return switch (c) {
             case 'X' -> Symbol.X;
             case 'O' -> Symbol.O;

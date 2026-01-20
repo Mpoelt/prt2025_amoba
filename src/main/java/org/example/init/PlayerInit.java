@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 public class PlayerInit {
 private final ConsoleService consoleService;
 
-    public PlayerInit(ConsoleService consoleService) {
+    public PlayerInit(final ConsoleService consoleService) {
         this.consoleService = consoleService;
     }
 
-public Player createHumanPlayer(){
-        String name = consoleService.readStringFromConsole("Add meg a játékos nevét: ");
+public Player createHumanPlayer() {
+       final  String name = consoleService.readStringFromConsole("Add meg a játékos nevét: ");
         return new HumanPlayer(Symbol.X, name);
 }
 }

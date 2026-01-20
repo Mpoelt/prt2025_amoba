@@ -2,10 +2,14 @@ package org.example.service;
 
 import org.example.database.entity.HighScore;
 import org.example.display.BoardDisplayer;
-import org.example.domain.*;
+import org.example.domain.Board;
+import org.example.domain.ComputerPlayer;
+import org.example.domain.Player;
+import org.example.domain.Symbol;
 import org.example.init.PlayerInit;
 import org.springframework.stereotype.Service;
 
+@SuppressWarnings({"PMD.LongVariable"})
 @Service
 public class GameService {
     private final ConsoleService consoleService;
@@ -16,15 +20,22 @@ public class GameService {
     private final BoardService boardService;
     private final ComputerPlayerService computerPlayerService;
     private final GameSaveService gameSaveService;
-    //private final GameLoadService gameLoadService;
     private final HighScoreService highScoreService;
 
     private Board board;
     private Player humanPlayer;
     private ComputerPlayer computerPlayer;
 
-    public GameService(BoardDisplayer boardDisplayer, ConsoleService consoleService, PlayerInit playerInit, LoadGameDecider loadGameDecider,
-                       PlayerMoveService playerMoveService, BoardService boardService, ComputerPlayerService computerPlayerService, GameSaveService gameSaveService, HighScoreService highScoreService) {
+    public GameService(final BoardDisplayer boardDisplayer,
+                       final ConsoleService consoleService,
+                       final PlayerInit playerInit,
+                       final LoadGameDecider loadGameDecider,
+                       final PlayerMoveService playerMoveService,
+                       final BoardService boardService,
+                       final ComputerPlayerService computerPlayerService,
+                       final GameSaveService gameSaveService,
+                       final HighScoreService highScoreService) {
+
         this.boardDisplayer = boardDisplayer;
         this.consoleService = consoleService;
         this.playerInit = playerInit;
@@ -33,26 +44,26 @@ public class GameService {
         this.boardService = boardService;
         this.computerPlayerService = computerPlayerService;
         this.gameSaveService = gameSaveService;
-
         this.highScoreService = highScoreService;
     }
 
-    public void startGame(){
+    @SuppressWarnings({"PMD.LiteralsFirstInComparisons"})
+    public void startGame() {
         humanPlayer = playerInit.createHumanPlayer();
         computerPlayer = new ComputerPlayer(Symbol.O, "Computer");
 
-        HighScore highScore = highScoreService.findByPlayerNameOrCreate(humanPlayer.getName());
+        final HighScore highScore = highScoreService.findByPlayerNameOrCreate(humanPlayer.getName());
 
-        while (true){
-            boolean playerWon = playerSingleGame(highScore);
+        while (true) {
+            final boolean playerWon = playerSingleGame(highScore);
 
-            if (playerWon){
+            if (playerWon) {
                 highScore.setGamesWon(highScore.getGamesWon() + 1);
                 highScoreService.save(highScore);
                 consoleService.print("Nyertél! Összpontszám: " + highScore.getGamesWon());
             }
-            String answer = consoleService.readStringFromConsole("Szeretné új játékot? (yes/no)");
-            if (!answer.equalsIgnoreCase("yes")){
+            final String answer = consoleService.readStringFromConsole("Szeretné új játékot? (yes/no)");
+            if (!answer.equalsIgnoreCase("yes")) {
                 consoleService.print("Kilépés. Viszlát!");
                 return;
             }
@@ -60,12 +71,13 @@ public class GameService {
         }
     }
 
-    private boolean playerSingleGame(HighScore highScore) {
+    @SuppressWarnings({"PMD.UnusedFormalParameter", "PMD.OnlyOneReturn"})
+    private boolean playerSingleGame(final HighScore highScore) {
         board = loadGameDecider.loadBoard();
         consoleService.printWithPlayerName("Hello {}, új játék indul!", humanPlayer.getName());
 
         //első lépés középre helyezése
-        int center = board.getSize() / 2 ;
+        final int center = board.getSize() / 2;
         humanPlayer.setPosition(center, center);
         boardService.makeMove(board, humanPlayer);
         //megjelenítés
@@ -98,70 +110,10 @@ public class GameService {
             boardService.makeMove(board, computerPlayer);
             boardDisplayer.displayBoard(board);
 
-            if(playerMoveService.checkWin(board, computerPlayer.getRow(), computerPlayer.getCol(), computerPlayer.getSymbol())) {
+            if (playerMoveService.checkWin(board, computerPlayer.getRow(), computerPlayer.getCol(), computerPlayer.getSymbol())) {
                 consoleService.print("A ComputerPlayer nyert!");
                 return false;
             }
-
-        }
-
-    }
-
-
-    /*
-    public void startGame(){
-        board = loadGameDecider.loadBoard();
-        humanPlayer = playerInit.createHumanPlayer();
-        computerPlayer = new ComputerPlayer(Symbol.O, "Computer");
-
-        HighScore highScore = highScoreService.findByPlayerNameOrCreate(humanPlayer.getName());
-        consoleService.printWithPlayerName("Hello {}, A játék elkezdődött, ez a te pályád: ", humanPlayer.getName());
-
-        //első lépés középre helyezése
-        int center = board.getSize() / 2 ;
-        humanPlayer.setPosition(center, center);
-        boardService.makeMove(board, humanPlayer);
-        //megjelenítés
-        boardDisplayer.displayBoard(board);
-        while (true){
-            consoleService.print("Ha el szeretnéd menteni a játék állását írd be a 'save' parancsot! ");
-
-            try {
-                //1. bekért lépés
-                playerMoveService.readPlayerMove(humanPlayer, board.getSize());
-            } catch (SaveCommandExceptionService e) {
-                gameSaveService.saveBoardToFile(board, "mentes.txt");
-                consoleService.print("Játék elmentve!");
-                continue;
-            }
-        //logika
-            if (!boardService.makeMove(board, humanPlayer)) {
-                consoleService.print("Ez a mező foglalt!\n");
-                continue;
-            }
-
-
-            if (playerMoveService.checkWin(board, humanPlayer.getRow(), humanPlayer.getCol(), humanPlayer.getSymbol())){
-                highScore.setGamesWon(highScore.getGamesWon() + 1);
-                highScoreService.save(highScore);
-                consoleService.print("Congratulation! You Win!");
-                boardDisplayer.displayBoard(board);
-                return;
-            }
-
-            //ComputerPlayer Move
-            consoleService.print("ComputerPlayer gondolkodik...");
-            computerPlayerService.makeMove(computerPlayer, humanPlayer, board);
-            boardService.makeMove(board, computerPlayer);
-            boardDisplayer.displayBoard(board);
-
-            if(playerMoveService.checkWin(board, computerPlayer.getRow(), computerPlayer.getCol(), computerPlayer.getSymbol())){
-                consoleService.print("A ComputerPlayer nyert!");
-                return;
-            }
-
         }
     }
-
-*/
 }

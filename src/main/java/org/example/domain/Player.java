@@ -2,13 +2,13 @@ package org.example.domain;
 
 
 
-public abstract class Player {
+public class Player {
     private int row;
     private int col;
     private final Symbol symbol;
     private final String name;
 
-    protected Player(Symbol symbol, String name){
+    protected Player(final Symbol symbol, final String name) {
         this.symbol = symbol;
         this.name = name;
     }
@@ -17,7 +17,7 @@ public abstract class Player {
         return name;
     }
 
-    public void setPosition(int row, int col) {
+    public void setPosition(final int row, final int col) {
         this.row = row;
         this.col = col;
     }

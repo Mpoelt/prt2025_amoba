@@ -1,11 +1,11 @@
 package org.example.service;
 
+import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Scanner;
 
 @Service
 public class ConsoleService {
@@ -16,24 +16,26 @@ public class ConsoleService {
         this.scanner = new Scanner(System.in);
     }
 
-    public int readIntFromConsole(String message){
+    public int readIntFromConsole(final String message) {
         LOGGER.info(message);
         return scanner.nextInt();
     }
-    public boolean readBooleanFromConsole(String message){
+
+    public boolean readBooleanFromConsole(final String message) {
         LOGGER.info(message);
         return scanner.nextBoolean();
     }
-    public String readStringFromConsole(String message){
+
+    public String readStringFromConsole(final String message) {
         LOGGER.info(message);
         return scanner.next();
     }
 
-    public void print(String message){
+    public void print(final String message) {
         LOGGER.info(message);
     }
 
-    public void printWithPlayerName(String message, String playerName){
+    public void printWithPlayerName(final String message, final String playerName) {
         LOGGER.info(message, playerName);
     }
 
