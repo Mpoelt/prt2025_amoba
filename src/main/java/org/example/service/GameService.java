@@ -88,14 +88,6 @@ public class GameService {
         boardService.makeMove(board, computerPlayer);
         boardDisplayer.displayBoard(board);
 
-        if (playerMoveService.checkWin(
-                board,
-                computerPlayer.getRow(),
-                computerPlayer.getCol(),
-                computerPlayer.getSymbol())) {
-            consoleService.print("A ComputerPlayer nyert!");
-            return false;
-        }
 
         while (true) {
             try {
